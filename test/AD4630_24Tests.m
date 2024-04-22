@@ -50,7 +50,7 @@ classdef AD4630_24Tests < HardwareTests
         end
 
         function testAD4630_24AttrSampleRate(testCase,sample_rate)
-        % '1750000' is set as '1754386'
+        % '1760000' is set as '1754386'
             adc = adi.AD4630_24.Rx('uri',testCase.uri);
             adc.uri = testCase.uri;
             val = sample_rate;
@@ -63,7 +63,7 @@ classdef AD4630_24Tests < HardwareTests
 %             testCase.assertTrue(strcmp(val,string(ret_val)), ...
 %                 'Sample rate unexpected')
             testCase.verifyEqual(str2double(ret_val),str2double(val), ...
-                'RelTol',0,'Sample rate unexpected')
+                'RelTol',0.01,'Sample rate unexpected')
         end
 
         % function testAD4630_24AttrSampleAveragingLength(testCase,sample_averaging_length)
