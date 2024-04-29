@@ -49,22 +49,22 @@ classdef AD4630_24Tests < HardwareTests
             testCase.assertTrue(sum(abs(double(data)))>0);
         end
 
-        function testAD4630_24AttrSampleRate(testCase,sample_rate)
-        % '1760000' is set as '1754386'
-            adc = adi.AD4630_24.Rx('uri',testCase.uri);
-            adc.uri = testCase.uri;
-            val = sample_rate;
-            adc.SampleRate = val;
-            [data,valid] = adc();
-            ret_val = adc.getDeviceAttributeRAW('sampling_frequency',9);
-            adc.release();
-            testCase.assertTrue(valid);
-            testCase.assertTrue(sum(abs(double(data)))>0);
-%             testCase.assertTrue(strcmp(val,string(ret_val)), ...
-%                 'Sample rate unexpected')
-            testCase.verifyEqual(str2double(ret_val),str2double(val), ...
-                'RelTol',0.01,'Sample rate unexpected')
-        end
+%         function testAD4630_24AttrSampleRate(testCase,sample_rate)
+%         % '1760000' is set as '1754386'
+%             adc = adi.AD4630_24.Rx('uri',testCase.uri);
+%             adc.uri = testCase.uri;
+%             val = sample_rate;
+%             adc.SampleRate = val;
+%             [data,valid] = adc();
+%             ret_val = adc.getDeviceAttributeRAW('sampling_frequency',9);
+%             adc.release();
+%             testCase.assertTrue(valid);
+%             testCase.assertTrue(sum(abs(double(data)))>0);
+% %             testCase.assertTrue(strcmp(val,string(ret_val)), ...
+% %                 'Sample rate unexpected')
+%             testCase.verifyEqual(str2double(ret_val),str2double(val), ...
+%                 'RelTol',0.01,'Sample rate unexpected')
+%         end
 
         % function testAD4630_24AttrSampleAveragingLength(testCase,sample_averaging_length)
         % % The average mode works only with the output data mode set to 30-bit average

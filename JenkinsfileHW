@@ -62,7 +62,7 @@ lock('nuc04') {
     // Test stage
     harness.set_matlab_commands(["addpath(genpath('test'))",
                     "pyenv('Version','/usr/bin/python3')",
-                    "clib.libm2k.libm2k.context.getVersion()",
+                    "disp(clib.libm2k.libm2k.context.getVersion())",
                     "runHWTests(getenv('board'))"])
     harness.add_stage(harness.stage_library("MATLABTests"),'continueWhenFail')
   
