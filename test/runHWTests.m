@@ -18,6 +18,7 @@ switch board
     case {"zynq-zed-ad7768", ...
             "zynq-zed-adv7511-ad7768-axi-adc-precision"}
         at = 'AD7768';
+        baseVariant = true;
     case {"zynq-zed-adv7511-ad7768-1-evb", ...
             "zynq-zed-adv7511-ad7768-1-evb-precision"}
         at = 'AD7768_1';
@@ -40,6 +41,10 @@ if nargin == 0
 else
     suite = testsuite(ats);
     suite = selectIf(suite,HasProcedureName(ContainsSubstring(at,'IgnoringCase',true)));
+    %% Deselect AD7768_x tests from AD7768
+    if baseVariant
+        suite = selectIf(suite,HasProcedureName(~ContainsSubstring("_")));
+    end
 end
 
 try
