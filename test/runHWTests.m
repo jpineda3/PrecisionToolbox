@@ -12,6 +12,7 @@ import matlab.unittest.constraints.ContainsSubstring;
 import matlab.unittest.selectors.HasName;
 import matlab.unittest.selectors.HasProcedureName;
 
+baseVariant = false;
 switch board
     case "zynq-zed-ad7380"
         at = 'AD7380';
@@ -26,8 +27,9 @@ switch board
         at = 'AD4030';
     case "zynq-zed-ad4630-16"
         at = 'AD4630_16';
+        baseVariant = true;
     case {"zynq-zed-ad4630-24", ...
-        "zynq-zed-adv7511-ad4630-24-precision"}
+            "zynq-zed-adv7511-ad4630-24-precision"}
         at = 'AD4630_24';
     
     otherwise
@@ -41,7 +43,6 @@ if nargin == 0
 else
     suite = testsuite(ats);
     suite = selectIf(suite,HasProcedureName(ContainsSubstring(at,'IgnoringCase',true)));
-    %% Deselect AD7768_x tests from AD7768
     if baseVariant
         suite = selectIf(suite,HasProcedureName(~ContainsSubstring("_")));
     end
