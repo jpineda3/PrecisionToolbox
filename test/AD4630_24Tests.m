@@ -138,7 +138,7 @@ classdef AD4630_24Tests < HardwareTests
                     [data,valid] = adc();
                 end
                 data = double(data);
-                freq = estFrequencyMax(double(data),fs);
+                freq = testCase.estFrequencyMax(double(data),fs);
 
                 % Assertions
                 testCase.assertTrue(valid);
