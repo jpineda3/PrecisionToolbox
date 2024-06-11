@@ -6,9 +6,9 @@ classdef AD7768_1Tests < HardwareTests
     end
 
     properties(TestParameter)
-        % start frequency. stop frequency, step, tolerance, repeats
+        % start. stop, step, tolerance, repeats
         signal_test = {{1000,125000,2500,0.015,10}};
-        samples_per_frame = {{2^1,2^24,2^8,0.0,10}};
+        samples_per_frame = {{2^1,1048580,2^16,0.0,10}};
         sample_rate = {'256000', '128000', '64000', ...
                      '32000', '16000', '8000', '4000', ...
                      '2000', '1000'};
@@ -79,34 +79,6 @@ classdef AD7768_1Tests < HardwareTests
             m2k_class.contextClose();
         end
 
-        function testAD7768_1AttrSampleRate(testCase,sample_rate)
-        % FIXME: Hangs unless board is rebooted
-            adc = adi.AD7768_1.Rx;
-            adc.uri = testCase.uri;
-            val = sample_rate;
-            adc.SampleRate = val;
-            [data,valid] = adc();
-            ret_val = adc.getDeviceAttributeRAW('sampling_frequency',8);
-            adc.release();
-            testCase.assertTrue(valid);
-            testCase.assertTrue(sum(abs(double(data)))>0);
-            testCase.assertTrue(strcmp(val,string(ret_val)));
-        end
-
-        function testAD7768_1AttrCommonModeVolage(testCase,common_mode_voltage)
-        % FIXME: Hangs unless board is rebooted
-            adc = adi.AD7768_1.Rx;
-            adc.uri = testCase.uri;
-            val = common_mode_voltage;
-            adc.CommonModeVolts = val;
-            [data,valid] = adc();
-            ret_val = adc.getDeviceAttributeRAW('common_mode_voltage',8);
-            adc.release();
-            testCase.assertTrue(valid);
-            testCase.assertTrue(sum(abs(double(data)))>0);
-            testCase.assertTrue(strcmp(val,string(ret_val)));
-        end
-
         function testAD7768_1AttrSamplesPerFrame(testCase,samples_per_frame)
         % This is not written to the device. Should this even be tested?
             adc = adi.AD7768_1.Rx;
@@ -121,6 +93,7 @@ classdef AD7768_1Tests < HardwareTests
             for ii = 1:repeats
                 ind = randi([0, numints]);
                 val = start+(step*ind);
+                disp("Setting SamplesPerFrame to " + string(val));
                 adc.SamplesPerFrame = val;
                 [data, valid] = adc();
                 [ret_val,~] = size(data);
@@ -131,6 +104,39 @@ classdef AD7768_1Tests < HardwareTests
                     'Frequency of signal unexpected')
             end
         end
+
+        function testAD7768_1AttrCommonModeVolage(testCase,common_mode_voltage)
+            % FIXME: Hangs unless board is rebooted
+                adc = adi.AD7768_1.Rx;
+                adc.uri = testCase.uri;
+                val = common_mode_voltage;
+                disp("Setting CommonModeVoltage to " + val);
+                adc.CommonModeVolts = val;
+                [data,valid] = adc();
+                ret_val = adc.getDeviceAttributeRAW('common_mode_voltage',16);
+                disp("Read attribute value: " + ret_val);
+                adc.release();
+                testCase.assertTrue(valid);
+                testCase.assertTrue(sum(abs(double(data)))>0);
+                testCase.assertTrue(strcmp(val,string(ret_val)));
+        end
+
+        function testAD7768_1AttrSampleRate(testCase,sample_rate)
+        % FIXME: Hangs unless board is rebooted
+            adc = adi.AD7768_1.Rx;
+            adc.uri = testCase.uri;
+            val = sample_rate;
+            disp("Setting SampleRate to " + val);
+            adc.SampleRate = val;
+            [data,valid] = adc();
+            ret_val = adc.getDeviceAttributeRAW('sampling_frequency',8);
+            disp("Read attribute value: " + ret_val);
+            adc.release();
+            testCase.assertTrue(valid);
+            testCase.assertTrue(sum(abs(double(data)))>0);
+            testCase.assertTrue(strcmp(val,string(ret_val)));
+        end
+
     end
     
 end
